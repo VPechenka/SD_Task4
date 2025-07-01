@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Список
+{% endblock %}
+
+{% block body %}
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Все ссылки</h1>
+            </div>
+
+            <div class="table-container">
+                <form method="POST">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th style="width: 40px;"></th>
+                            <th>Оригинальная ссылка</th>
+                            <th>Короткая ссылка</th>
+                            <th>Переходы</th>
+                            <th>Последний переход</th>
+                            <th>Создана</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for link in links %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="checkbox" name="selected_links[]"
+                                           value="{{ link.id }}">
+                                </td>
+
+                                <td>
+                                    <div class="original-url">
+                                        {{ link.getOriginalUrl() }}
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <a href="{{ link.getFullShortUrl() }}" class="short-url">
+                                        {{ link.getFullShortUrl() }}
+                                    </a>
+                                </td>
+
+                                <td>{{ link.getNumberOfClicks() }}</td>
+
+                                <td>
+                                    {% if link.getUseAt() is null %}
+                                        Не использовалась
+                                    {% else %}
+                                        {{ link.getUseAt().format('d.m.Y H:i:s') }}
+                                    {% endif %}
+                                </td>
+
+                                <td>{{ link.getCreateAt().format('d.m.Y H:i:s') }}</td>
+
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt" style="margin-right: 0.5rem;"></i>
+                            Удалить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

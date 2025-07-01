@@ -1,0 +1,25 @@
+<header>
+    <div class="header-container">
+        <nav class="navbar">
+            <a href="{{ path('getLinkForm') }}" class="logo">
+                PHP-ShortLink
+            </a>
+
+            <div class="nav-links">
+                <a href="{{ path('getLinkForm') }}"
+                    {% if app.request.pathinfo == '/' %}
+                    class="active"
+                    {% endif %}>
+                    Создать
+                </a>
+
+                <a href="{{ path('getLinksList') }}"
+                    {% if app.request.pathinfo == '/list' %}
+                    class="active"
+                    {% endif %}>
+                    Список
+                </a>
+            </div>
+        </nav>
+    </div>
+</header>

@@ -3,3 +3,34 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+getLinkForm:
+    path: /
+    controller: App\Controller\LinkDataController::getLinkForm
+    methods: [ GET ]
+
+postLink:
+    path: /
+    controller: App\Controller\LinkDataController::postLink
+    methods: [ POST ]
+
+getLink:
+    path: /short/{slug}
+    controller: App\Controller\LinkDataController::getLink
+    methods: [ GET ]
+
+getLinksList:
+    path: /list
+    controller: App\Controller\LinkDataController::getLinksList
+    methods: [ GET ]
+
+hideLinks:
+    path: /list
+    controller: App\Controller\LinkDataController::hideLinks
+    methods: [ POST ]
+
+removeLinks:
+    path: /admin/remove
+    controller: App\Controller\LinkDataController::removeHiddenLinks
+    methods: [ GET, POST ]
+

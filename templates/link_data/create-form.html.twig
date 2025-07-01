@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Регистрация
+{% endblock %}
+
+{% block body %}
+    <main class="main">
+        <div class="container">
+            <div class="card">
+                <h2 class="card-title">
+                    Создать новую короткую ссылку
+                </h2>
+
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="original-url" class="form-label">
+                            Ваша ссылка
+                        </label>
+
+                        <input type="url" id="original-url" name="original-url"
+                               class="form-control" required
+                               placeholder="https://example.com/very-long-url">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Создать
+                    </button>
+                </form>
+
+                {% if shortUrl is not null %}
+                <div class="notification success">
+                    <span class="notification-icon">✓</span>
+                    <span>Ссылка успешно создана! Ваша короткая ссылка:
+                        <a href="{{ shortUrl }}" id="short-link">
+                            {{ shortUrl }}
+                        </a>
+                    </span>
+                </div>
+                {% endif %}
+
+                {% if error is not null %}
+                <div class="notification error">
+                    <span class="notification-icon">✕</span>
+                    <span id="error-message">
+                        {{ error }}
+                    </span>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </main>
+{% endblock %}
