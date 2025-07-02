@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LinkRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,13 +25,13 @@ class Link
     private ?int $numberOfClicks = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createAt = null;
+    private ?DateTimeImmutable $createAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $useAt = null;
+    private ?DateTimeImmutable $useAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $deleteAt = null;
+    private ?DateTimeImmutable $deleteAt = null;
 
     #[ORM\Column]
     private bool $isDeleted = false;
@@ -107,12 +108,12 @@ class Link
     }
 
 
-    public function getCreateAt(): ?\DateTimeImmutable
+    public function getCreateAt(): ?DateTimeImmutable
     {
         return $this->createAt;
     }
 
-    public function setCreateAt(\DateTimeImmutable $createAt): static
+    public function setCreateAt(DateTimeImmutable $createAt): static
     {
         $this->createAt = $createAt;
 
@@ -121,18 +122,18 @@ class Link
 
     public function setCreateNow(): static
     {
-        $this->createAt = new \DateTimeImmutable();
+        $this->createAt = new DateTimeImmutable();
 
         return $this;
     }
 
 
-    public function getUseAt(): ?\DateTimeImmutable
+    public function getUseAt(): ?DateTimeImmutable
     {
         return $this->useAt;
     }
 
-    public function setUseAt(\DateTimeImmutable $useAt): static
+    public function setUseAt(DateTimeImmutable $useAt): static
     {
         $this->useAt = $useAt;
 
@@ -141,18 +142,18 @@ class Link
 
     public function setUseNow(): static
     {
-        $this->useAt = new \DateTimeImmutable();
+        $this->useAt = new DateTimeImmutable();
 
         return $this;
     }
 
 
-    public function getDeleteAt(): ?\DateTimeImmutable
+    public function getDeleteAt(): ?DateTimeImmutable
     {
         return $this->deleteAt;
     }
 
-    public function setDeleteAt(?\DateTimeImmutable $deleteAt): static
+    public function setDeleteAt(?DateTimeImmutable $deleteAt): static
     {
         $this->deleteAt = $deleteAt;
 
@@ -161,7 +162,7 @@ class Link
 
     public function setDeleteNow(): static
     {
-        $this->deleteAt = new \DateTimeImmutable();
+        $this->deleteAt = new DateTimeImmutable();
 
         return $this;
     }

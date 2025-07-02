@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Link;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -74,7 +75,7 @@ class LinkRepository extends ServiceEntityRepository
 
     public function deleteOldLinks(): void
     {
-        $dateThreshold = new \DateTimeImmutable('-1 month');
+        $dateThreshold = new DateTimeImmutable('-1 month');
 
         $this->createQueryBuilder('l')
             ->delete()

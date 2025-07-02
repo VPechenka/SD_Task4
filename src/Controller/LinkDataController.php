@@ -20,14 +20,16 @@ final class LinkDataController extends AbstractController
     public function postLink(Request $request, LinkRepository $linkRepository): Response
     {
         $originalUrl = $request->request->get('original-url');
+        $link = null;
 
         if (!filter_var($originalUrl, FILTER_VALIDATE_URL)) {
             $error = 'Введите корректную ссылку';
         } else {
             $link = $linkRepository->addLink($originalUrl);
         }
+
         return $this->render('link_data/create-form.html.twig', [
-            'shortUrl' => $link->getFullShortUrl() ?? null,
+            'shortUrl' => $link?->getFullShortUrl(),
             'error' => $error ?? null,
         ]);
     }
