@@ -7,17 +7,24 @@
 
             <div class="nav-links">
                 <a href="{{ path('getLinkForm') }}"
-                    {% if app.request.pathinfo == '/' %}
+                    {% if app.request.pathinfo == path('getLinkForm') %}
                     class="active"
                     {% endif %}>
                     Создать
                 </a>
 
                 <a href="{{ path('getLinksList') }}"
-                    {% if app.request.pathinfo == '/list' %}
+                    {% if app.request.pathinfo == path('getLinksList') %}
                     class="active"
                     {% endif %}>
-                    Список
+                    Существующие ссылки
+                </a>
+
+                <a href="{{ path('getDeletedLinksList') }}"
+                    {% if app.request.pathinfo == path('getDeletedLinksList') %}
+                    class="active"
+                    {% endif %}>
+                    Удаленные ссылки
                 </a>
             </div>
         </nav>

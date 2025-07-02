@@ -29,10 +29,17 @@ class Link
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $useAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $deleteAt = null;
+
+    #[ORM\Column]
+    private bool $isDeleted = false;
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
 
     public function getOriginalUrl(): ?string
     {
@@ -45,6 +52,7 @@ class Link
 
         return $this;
     }
+
 
     public function getShortUrl(): ?string
     {
@@ -78,6 +86,7 @@ class Link
         return $this;
     }
 
+
     public function getNumberOfClicks(): ?int
     {
         return $this->numberOfClicks;
@@ -96,6 +105,7 @@ class Link
 
         return $this;
     }
+
 
     public function getCreateAt(): ?\DateTimeImmutable
     {
@@ -116,6 +126,7 @@ class Link
         return $this;
     }
 
+
     public function getUseAt(): ?\DateTimeImmutable
     {
         return $this->useAt;
@@ -131,6 +142,38 @@ class Link
     public function setUseNow(): static
     {
         $this->useAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+
+    public function getDeleteAt(): ?\DateTimeImmutable
+    {
+        return $this->deleteAt;
+    }
+
+    public function setDeleteAt(?\DateTimeImmutable $deleteAt): static
+    {
+        $this->deleteAt = $deleteAt;
+
+        return $this;
+    }
+
+    public function setDeleteNow(): static
+    {
+        $this->deleteAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): static
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

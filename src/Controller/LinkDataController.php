@@ -36,7 +36,7 @@ final class LinkDataController extends AbstractController
     {
         $link = $linkRepository->findOneBy(['shortUrl' => $slug]);
 
-        if (!$link)
+        if (!$link or $link->isDeleted())
             return new Response(
                 $this->renderView('link_data/error.html.twig', [
                     'error' => 'Данная ссылка никуда не ведет',
@@ -50,13 +50,13 @@ final class LinkDataController extends AbstractController
 
     public function getLinksList(LinkRepository $linkRepository): Response
     {
-        $links = $linkRepository->findAll();
+        $links = $linkRepository->findAllByIsDeleted(false);
         return $this->render('link_data/list.html.twig', [
             'links' => $links,
         ]);
     }
 
-    public function hideLinks(Request $request, LinkRepository $linkRepository): Response
+    private function getSelectedLinks(Request $request): ?array
     {
         $linksIds = $request->request->all('selected_links');
 
@@ -64,16 +64,53 @@ final class LinkDataController extends AbstractController
             if (filter_var($linkId, FILTER_VALIDATE_INT))
                 $linkId = (int)$linkId;
             else
-                return new Response(
-                    $this->renderView('link_data/error.html.twig', [
-                        'error' => 'В веденных данных содержится ошибка',
-                    ]),
-                    Response::HTTP_UNPROCESSABLE_ENTITY
-                );
+                return null;
         }
 
-        $linkRepository->removeById($linksIds);
+        return $linksIds;
+    }
+
+    public function deleteLinks(Request $request, LinkRepository $linkRepository): Response
+    {
+        $linksIds = $this->getSelectedLinks($request);
+
+        if (!$linksIds)
+            return new Response(
+                $this->renderView('link_data/error.html.twig', [
+                    'error' => 'В веденных данных содержится ошибка',
+                ]),
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+
+        $linkRepository->setDeletedById($linksIds, true);
 
         return $this->redirectToRoute('getLinksList');
+    }
+
+    public function getDeletedLinksList(LinkRepository $linkRepository): Response
+    {
+        $linkRepository->deleteOldLinks();
+
+        $links = $linkRepository->findAllByIsDeleted(true);
+        return $this->render('link_data/deleted-list.html.twig', [
+            'links' => $links,
+        ]);
+    }
+
+    public function recoverLinks(Request $request, LinkRepository $linkRepository): Response
+    {
+        $linksIds = $this->getSelectedLinks($request);
+
+        if (!$linksIds)
+            return new Response(
+                $this->renderView('link_data/error.html.twig', [
+                    'error' => 'В веденных данных содержится ошибка',
+                ]),
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+
+        $linkRepository->setDeletedById($linksIds, false);
+
+        return $this->redirectToRoute('getDeletedLinksList');
     }
 }

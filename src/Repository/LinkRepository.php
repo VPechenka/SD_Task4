@@ -45,19 +45,42 @@ class LinkRepository extends ServiceEntityRepository
     /**
      * @return Link[] Returns an array of Link objects
      */
-    public function findAll(): array
+    public function findAllByIsDeleted(bool $isDelete): array
     {
         return $this->createQueryBuilder('l')
+            ->where('l.isDeleted = :isDelete')
+            ->setParameter('isDelete', $isDelete)
             ->getQuery()
             ->getResult();
     }
 
-    public function removeById(array $ids): void
+    public function setDeletedById(array $ids, bool $isDelete): void
     {
-        $this->createQueryBuilder('l')
-            ->delete()
+        $links = $this->createQueryBuilder('l')
             ->where('l.id IN (:ids)')
             ->setParameter('ids', $ids)
+            ->getQuery()->getResult();
+
+        foreach ($links as $link) {
+            $link->setIsDeleted($isDelete);
+            if ($isDelete)
+                $link->setDeleteNow();
+            else
+                $link->setDeleteAt(null);
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    public function deleteOldLinks(): void
+    {
+        $dateThreshold = new \DateTimeImmutable('-1 month');
+
+        $this->createQueryBuilder('l')
+            ->delete()
+            ->where('l.isDeleted = true')
+            ->andWhere('l.deleteAt < :dateThreshold')
+            ->setParameter('dateThreshold', $dateThreshold)
             ->getQuery()
             ->execute();
     }

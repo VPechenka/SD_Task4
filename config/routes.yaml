@@ -24,13 +24,18 @@ getLinksList:
     controller: App\Controller\LinkDataController::getLinksList
     methods: [ GET ]
 
-hideLinks:
+deleteLinks:
     path: /list
-    controller: App\Controller\LinkDataController::hideLinks
+    controller: App\Controller\LinkDataController::deleteLinks
     methods: [ POST ]
 
-removeLinks:
-    path: /admin/remove
-    controller: App\Controller\LinkDataController::removeHiddenLinks
-    methods: [ GET, POST ]
+getDeletedLinksList:
+    path: /list/deleted
+    controller: App\Controller\LinkDataController::getDeletedLinksList
+    methods: [ GET ]
+
+recoverLinks:
+    path: /list/deleted
+    controller: App\Controller\LinkDataController::recoverLinks
+    methods: [ POST ]
 
