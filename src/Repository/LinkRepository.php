@@ -45,42 +45,20 @@ class LinkRepository extends ServiceEntityRepository
     /**
      * @return Link[] Returns an array of Link objects
      */
-    public function findByAvailable(): array
+    public function findAll(): array
     {
         return $this->createQueryBuilder('l')
-            ->andWhere('l.isAvailable = true')
-            ->orderBy('l.createAt')
             ->getQuery()
             ->getResult();
     }
 
-    public function hideById(array $ids): void
+    public function removeById(array $ids): void
     {
-        $entityManager = $this->getEntityManager();
-
-        foreach ($ids as $id) {
-            $link = $this->find($id);
-            var_dump($link);
-            $link->setIsAvailable(false);
-        }
-
-        $entityManager->flush();
-    }
-
-    public function removeHiddenLinks(): void
-    {
-
-        $links = $this->createQueryBuilder('l')
-            ->andWhere('l.isAvailable = false')
+        $this->createQueryBuilder('l')
+            ->delete()
+            ->where('l.id IN (:ids)')
+            ->setParameter('ids', $ids)
             ->getQuery()
-            ->getResult();
-
-        $entityManager = $this->getEntityManager();
-
-        foreach ($links as $link) {
-            $entityManager->remove($link);
-        }
-
-        $entityManager->flush();
+            ->execute();
     }
 }

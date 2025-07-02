@@ -36,7 +36,7 @@ final class LinkDataController extends AbstractController
     {
         $link = $linkRepository->findOneBy(['shortUrl' => $slug]);
 
-        if (!$link or !$link->isAvailable())
+        if (!$link)
             return new Response(
                 $this->renderView('link_data/error.html.twig', [
                     'error' => 'Данная ссылка никуда не ведет',
@@ -50,7 +50,7 @@ final class LinkDataController extends AbstractController
 
     public function getLinksList(LinkRepository $linkRepository): Response
     {
-        $links = $linkRepository->findByAvailable();
+        $links = $linkRepository->findAll();
         return $this->render('link_data/list.html.twig', [
             'links' => $links,
         ]);
@@ -72,19 +72,8 @@ final class LinkDataController extends AbstractController
                 );
         }
 
-        $linkRepository->hideById($linksIds);
+        $linkRepository->removeById($linksIds);
 
         return $this->redirectToRoute('getLinksList');
-    }
-
-    public function removeHiddenLinks(Request $request, LinkRepository $linkRepository): Response
-    {
-        if ($request->getMethod() === 'POST') {
-            $linkRepository->removeHiddenLinks();
-            $result = true;
-        }
-        return $this->render('link_data/remove-form.html.twig', [
-            'result' => $result?? false,
-        ]);
     }
 }

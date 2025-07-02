@@ -29,9 +29,6 @@ class Link
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $useAt = null;
 
-    #[ORM\Column]
-    private bool $isAvailable = True;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -48,7 +45,6 @@ class Link
 
         return $this;
     }
-
 
     public function getShortUrl(): ?string
     {
@@ -82,7 +78,6 @@ class Link
         return $this;
     }
 
-
     public function getNumberOfClicks(): ?int
     {
         return $this->numberOfClicks;
@@ -101,7 +96,6 @@ class Link
 
         return $this;
     }
-
 
     public function getCreateAt(): ?\DateTimeImmutable
     {
@@ -122,7 +116,6 @@ class Link
         return $this;
     }
 
-
     public function getUseAt(): ?\DateTimeImmutable
     {
         return $this->useAt;
@@ -138,19 +131,6 @@ class Link
     public function setUseNow(): static
     {
         $this->useAt = new \DateTimeImmutable();
-
-        return $this;
-    }
-
-
-    public function isAvailable(): bool
-    {
-        return $this->isAvailable;
-    }
-
-    public function setIsAvailable(bool $isAvailable): static
-    {
-        $this->isAvailable = $isAvailable;
 
         return $this;
     }
